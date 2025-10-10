@@ -1,19 +1,23 @@
 import 'package:e_commerce_supabase/core/colors.dart';
 import 'package:flutter/material.dart';
+
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,
     required this.labelText,
+    this.obscureTxt = false,
     this.suffixIcon,
+    this.keyboardType,
   });
   final String labelText;
-  final bool obscureText = false;
   final Widget? suffixIcon;
+  final TextInputType? keyboardType;
+  final bool obscureTxt;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: obscureText,
-      keyboardType: TextInputType.emailAddress,
+      obscureText: obscureTxt,
+      keyboardType: keyboardType,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Email is required';

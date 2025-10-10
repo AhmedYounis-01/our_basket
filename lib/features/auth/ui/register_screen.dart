@@ -1,12 +1,11 @@
 import 'package:e_commerce_supabase/core/colors.dart';
 import 'package:e_commerce_supabase/features/auth/ui/forgot_screen.dart';
-import 'package:e_commerce_supabase/features/auth/ui/register_screen.dart';
 import 'package:e_commerce_supabase/features/auth/ui/widgets/custom_row_button.dart';
 import 'package:e_commerce_supabase/features/auth/ui/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +30,11 @@ class LoginScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
                     children: [
+                      CustomTextFormField(
+                        labelText: "Name",
+                        keyboardType: TextInputType.name,
+                      ),
+                      SizedBox(height: 20),
                       CustomTextFormField(
                         labelText: "Email",
                         keyboardType: TextInputType.emailAddress,
@@ -61,12 +65,12 @@ class LoginScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       CustomRowWithArrowBtn(
-                        text: "Login",
+                        text: "Register",
                         icon: Icon(Icons.arrow_forward),
                       ),
                       SizedBox(height: 25),
                       CustomRowWithArrowBtn(
-                        text: "Login With Google",
+                        text: "Register With Google",
                         icon: Icon(Icons.arrow_forward),
                       ),
                       SizedBox(height: 25),
@@ -74,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Don't have an account?",
+                            "Already have an account?",
                             style: TextStyle(
                               color: AppColors.kBlackColor,
                               fontSize: 12,
@@ -82,15 +86,10 @@ class LoginScreen extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RegisterScreen(),
-                                ),
-                              );
+                              Navigator.pop(context);
                             },
                             child: Text(
-                              "Register",
+                              "Login",
                               style: TextStyle(
                                 color: AppColors.kPrimaryColor,
                                 fontSize: 12,

@@ -29,7 +29,10 @@ class ForgotScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
                     children: [
-                      CustomTextFormField(labelText: "Email"),
+                      CustomTextFormField(
+                        labelText: "Email",
+                        keyboardType: TextInputType.emailAddress,
+                      ),
                       SizedBox(height: 25),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(

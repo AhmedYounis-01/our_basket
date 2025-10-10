@@ -1,5 +1,4 @@
 import 'package:e_commerce_supabase/core/colors.dart';
-import 'package:e_commerce_supabase/features/auth/ui/forgot_screen.dart';
 import 'package:e_commerce_supabase/features/auth/ui/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +17,7 @@ class OurMarket extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.kScaffoldColor,
         useMaterial3: true,
       ),
-      home: const ForgotScreen(),
+      home: const LoginScreen(),
     );
   }
 }
