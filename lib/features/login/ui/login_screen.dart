@@ -31,6 +31,41 @@ class LoginScreen extends StatelessWidget {
                       labelText: "Password",
                       suffixIcon: Icon(Icons.visibility_off),
                     ),
+                    SizedBox(height: 20),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(color: AppColors.kPrimaryColor),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Login",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.kPrimaryColor,
+                            foregroundColor: AppColors.kWhiteColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: const Icon(Icons.arrow_forward),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
