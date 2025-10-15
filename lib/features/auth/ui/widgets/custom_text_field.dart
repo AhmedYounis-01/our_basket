@@ -1,4 +1,4 @@
-import 'package:e_commerce_supabase/core/colors.dart';
+import 'package:e_commerce_supabase/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -15,7 +15,8 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscureTxt;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return
+     TextFormField(
       obscureText: obscureTxt,
       keyboardType: keyboardType,
       validator: (value) {

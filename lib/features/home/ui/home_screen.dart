@@ -1,53 +1,60 @@
-import 'package:e_commerce_supabase/features/home/logic/cubit/home_cubit.dart';
-import 'package:e_commerce_supabase/features/home/logic/cubit/home_state.dart';
+import 'package:e_commerce_supabase/core/components/custom_search_filed.dart';
+import 'package:e_commerce_supabase/core/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  // List of pages to display
-  static final List<Widget> _pages = [
-    const Center(child: Text('Home Page', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('Store Page', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('Favorites Page', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('Profile Page', style: TextStyle(fontSize: 24))),
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeCubit(),
-      child: BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, state) {
-          return Scaffold(
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: _pages[state.currentIndex],
-              ),
-            ),
-            bottomNavigationBar: CurvedNavigationBar(
-              index: state.currentIndex,
-              height: 60,
-              backgroundColor: Colors.transparent,
-              color: Colors.blue,
-              buttonBackgroundColor: Colors.blue,
-              animationDuration: const Duration(milliseconds: 300),
-              items: const [
-                Icon(Icons.home, size: 30, color: Colors.white),
-                Icon(Icons.store, size: 30, color: Colors.white),
-                Icon(Icons.favorite, size: 30, color: Colors.white),
-                Icon(Icons.person, size: 30, color: Colors.white),
-              ],
-              onTap: (index) {
-                context.read<HomeCubit>().changeTab(index);
-              },
-            ),
-          );
-        },
-      ),
+    return ListView(
+      children: [
+        const CustomSearchField(),
+        const SizedBox(height: 15),
+        Image.asset("assets/images/buy.jpg"),
+        const SizedBox(height: 15),
+        SizedBox(
+          height: 100,
+          child: ListView.builder(
+            itemCount: categories.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: AppColors.kPrimaryColor,
+                      foregroundColor: AppColors.kWhiteColor,
+                      child: Icon(categories[index].icon, size: 40),
+                    ),
+                    Text(
+                      categories[index].text,
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
+}
+
+List<Category> categories = [
+  Category(icon: Icons.sports, text: "Sports"),
+  Category(icon: Icons.tv, text: "Electronics"),
+  Category(icon: Icons.image, text: "Collections"),
+  Category(icon: Icons.book, text: "Books"),
+  Category(icon: Icons.gamepad, text: "Games"),
+  Category(icon: Icons.bike_scooter, text: "Bikes"),
+];
+
+class Category {
+  final IconData icon;
+  final String text;
+
+  Category({required this.icon, required this.text});
 }

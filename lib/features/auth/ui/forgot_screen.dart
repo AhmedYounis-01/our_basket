@@ -1,4 +1,4 @@
-import 'package:e_commerce_supabase/core/colors.dart';
+import 'package:e_commerce_supabase/core/utils/colors.dart';
 import 'package:e_commerce_supabase/features/auth/ui/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
