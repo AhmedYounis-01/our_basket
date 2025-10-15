@@ -1,8 +1,9 @@
 import 'package:e_commerce_supabase/core/utils/colors.dart';
-import 'package:e_commerce_supabase/features/home/ui/main_home_screen.dart';
+import 'package:e_commerce_supabase/features/nav_bar/main_home_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const OurMarket());
 }
 

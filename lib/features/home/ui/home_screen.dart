@@ -1,5 +1,6 @@
 import 'package:e_commerce_supabase/core/components/custom_search_filed.dart';
-import 'package:e_commerce_supabase/core/utils/colors.dart';
+import 'package:e_commerce_supabase/core/components/product_list.dart';
+import 'package:e_commerce_supabase/features/home/ui/widgets/categories_list.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,50 +12,16 @@ class HomeScreen extends StatelessWidget {
         const CustomSearchField(),
         const SizedBox(height: 15),
         Image.asset("assets/images/buy.jpg"),
-        const SizedBox(height: 15),
-        SizedBox(
-          height: 100,
-          child: ListView.builder(
-            itemCount: categories.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: AppColors.kPrimaryColor,
-                      foregroundColor: AppColors.kWhiteColor,
-                      child: Icon(categories[index].icon, size: 40),
-                    ),
-                    Text(
-                      categories[index].text,
-                      style: TextStyle(fontSize: 10),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
+        const SizedBox(height: 10),
+        const Text("popular Categories"),
+        const SizedBox(height: 5),
+        CategoriesList(),
+        const SizedBox(height: 10),
+        const Text("Recently Products"),
+        const SizedBox(height: 5),
+        ProductsList(),
+        const SizedBox(height: 50),
       ],
     );
   }
-}
-
-List<Category> categories = [
-  Category(icon: Icons.sports, text: "Sports"),
-  Category(icon: Icons.tv, text: "Electronics"),
-  Category(icon: Icons.image, text: "Collections"),
-  Category(icon: Icons.book, text: "Books"),
-  Category(icon: Icons.gamepad, text: "Games"),
-  Category(icon: Icons.bike_scooter, text: "Bikes"),
-];
-
-class Category {
-  final IconData icon;
-  final String text;
-
-  Category({required this.icon, required this.text});
 }
