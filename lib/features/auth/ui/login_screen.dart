@@ -1,3 +1,4 @@
+import 'package:e_commerce_supabase/core/function/navigate_to.dart';
 import 'package:e_commerce_supabase/core/utils/colors.dart';
 import 'package:e_commerce_supabase/features/auth/ui/forgot_screen.dart';
 import 'package:e_commerce_supabase/features/auth/ui/register_screen.dart';
@@ -46,12 +47,7 @@ class LoginScreen extends StatelessWidget {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ForgotScreen(),
-                              ),
-                            );
+                            navigateTo(context, ForgotScreen());
                           },
                           child: Text(
                             "Forgot Password?",
@@ -82,12 +78,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RegisterScreen(),
-                                ),
-                              );
+                              navigateTo(context, RegisterScreen());
                             },
                             child: Text(
                               "Register",
