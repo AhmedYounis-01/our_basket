@@ -8,17 +8,19 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureTxt = false,
     this.suffixIcon,
     this.keyboardType,
+    this.controller,
   });
   final String labelText;
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
   final bool obscureTxt;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
-    return
-     TextFormField(
+    return TextFormField(
       obscureText: obscureTxt,
       keyboardType: keyboardType,
+      controller: controller,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Email is required';

@@ -6,9 +6,11 @@ class CustomRowWithArrowBtn extends StatelessWidget {
     super.key,
     required this.text,
     required this.icon,
+    this.onPressed,
   });
   final String text;
   final Widget icon;
+  final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -23,7 +25,7 @@ class CustomRowWithArrowBtn extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-          onPressed: () {},
+          onPressed: onPressed,
           child: icon,
         ),
       ],
