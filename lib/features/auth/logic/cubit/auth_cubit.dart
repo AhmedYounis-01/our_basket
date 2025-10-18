@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'dart:developer';
-part 'authantication_state.dart';
+part 'auth_state.dart';
 
-class AuthanticationCubit extends Cubit<AuthanticationState> {
-  AuthanticationCubit() : super(AuthanticationInitial());
+class AuthCubit extends Cubit<AuthState> {
+  AuthCubit() : super(AuthInitial());
   SupabaseClient client = Supabase.instance.client;
 
   Future<void> login({required String email, required String password}) async {
@@ -20,6 +20,24 @@ class AuthanticationCubit extends Cubit<AuthanticationState> {
     } catch (e) {
       log(e.toString());
       emit(LoginError(e.toString()));
+    }
+  }
+
+  Future<void> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    emit(RegisterLoading());
+    try {
+      await client.auth.signUp(email: email, password: password);
+      emit(RegisterSuccess());
+    } on AuthException catch (e) {
+      log(e.toString());
+      emit(RegisterError(e.toString()));
+    } catch (e) {
+      log(e.toString());
+      emit(RegisterError(e.toString()));
     }
   }
 }

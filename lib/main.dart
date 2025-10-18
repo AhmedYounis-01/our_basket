@@ -6,7 +6,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Supabase.initialize(
     //! Data APIs
     url: "https://mxgcypikbuuipodksmqe.supabase.co",
@@ -23,13 +22,17 @@ class OurMarket extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SupabaseClient client = Supabase.instance.client;
+    print(client.auth.currentUser);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: AppColors.kScaffoldColor,
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      home: client.auth.currentUser != null
+          ? MainHomeScreen()
+          : const LoginScreen(),
     );
   }
 }
