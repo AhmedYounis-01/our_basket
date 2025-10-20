@@ -9,6 +9,8 @@ sealed class AuthState extends Equatable {
 
 final class AuthInitial extends AuthState {}
 
+final class PasswordVisibality extends AuthState {}
+
 final class LoginLoading extends AuthState {}
 
 final class LoginSuccess extends AuthState {}
@@ -28,3 +30,15 @@ final class RegisterError extends AuthState {
 
   const RegisterError(this.msg);
 }
+
+final class GoogleSignInLoading extends AuthState {}
+
+final class GoogleSignInSuccess extends AuthState {}
+
+final class GoogleSignInError extends AuthState {}
+
+// final class LogOutLoading extends AuthState {}
+
+// final class LogOutSuccess extends AuthState {}
+
+// final class LogOutError extends AuthState {}

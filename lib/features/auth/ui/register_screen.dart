@@ -23,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  bool isVisible = false;
   @override
   void dispose() {
     _nameController.dispose();
@@ -38,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       create: (context) => AuthCubit(),
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is RegisterSuccess) {
+          if (state is RegisterSuccess || state is GoogleSignInSuccess) {
             navigateWithoutBack(context, MainHomeScreen());
           }
           if (state is RegisterError) showMsg(context, state.msg);
@@ -89,7 +89,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     SizedBox(height: 20),
                                     CustomTextFormField(
                                       labelText: "Password",
-                                      suffixIcon: Icon(Icons.visibility_off),
+                                      suffixIcon: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isVisible = !isVisible;
+                                          });
+                                        },
+                                        icon: Icon(
+                                          isVisible
+                                              ? Icons.visibility
+                                              : Icons.visibility_off,
+                                        ),
+                                      ),
                                       obscureTxt: true,
                                       controller: _passwordController,
                                     ),
@@ -126,6 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     CustomRowWithArrowBtn(
                                       text: "Register With Google",
                                       icon: Icon(Icons.arrow_forward),
+                                      onPressed: () => cubit.googleSignIn(),
                                     ),
                                     SizedBox(height: 25),
                                     Row(

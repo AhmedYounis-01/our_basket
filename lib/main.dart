@@ -1,11 +1,15 @@
 import 'package:e_commerce_supabase/core/utils/colors.dart';
 import 'package:e_commerce_supabase/features/auth/ui/login_screen.dart';
-import 'package:e_commerce_supabase/features/nav_bar/main_home_screen.dart';
+import 'package:e_commerce_supabase/features/home/ui/main_home_screen.dart';
+import 'package:e_commerce_supabase/my_observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = MyBlocObserver();
+
   await Supabase.initialize(
     //! Data APIs
     url: "https://mxgcypikbuuipodksmqe.supabase.co",
@@ -23,7 +27,6 @@ class OurMarket extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SupabaseClient client = Supabase.instance.client;
-    print(client.auth.currentUser);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

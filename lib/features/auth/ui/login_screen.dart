@@ -23,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isVisible = false;
 
   @override
   void dispose() {
@@ -37,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
       create: (context) => AuthCubit(),
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is LoginSuccess) {
+          if (state is LoginSuccess || state is GoogleSignInSuccess) {
             navigateWithoutBack(context, MainHomeScreen());
           }
           if (state is LoginError) showMsg(context, state.msg);
@@ -80,11 +81,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                       controller: _emailController,
                                     ),
                                     SizedBox(height: 20),
-                                    CustomTextFormField(
-                                      labelText: "Password",
-                                      suffixIcon: Icon(Icons.visibility_off),
-                                      obscureTxt: true,
-                                      controller: _passwordController,
+                                    BlocBuilder<AuthCubit, AuthState>(
+                                      builder: (context, state) {
+                                        return CustomTextFormField(
+                                          labelText: "Password",
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              isVisible
+                                                  ? Icons.visibility
+                                                  : Icons.visibility_off,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                
+                                              isVisible = !isVisible;
+                                              });
+                                            },
+                                          ),
+                                          obscureTxt: !isVisible,
+                                          controller: _passwordController,
+                                        );
+                                      },
                                     ),
                                     SizedBox(height: 20),
                                     Align(
@@ -118,6 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     CustomRowWithArrowBtn(
                                       text: "Login With Google",
                                       icon: Icon(Icons.arrow_forward),
+                                      onPressed: () => cubit.googleSignIn(),
                                     ),
                                     SizedBox(height: 25),
                                     Row(
