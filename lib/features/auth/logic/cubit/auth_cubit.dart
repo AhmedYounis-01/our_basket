@@ -115,6 +115,17 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> resetPassword({required String email}) async {
+    emit(ResetPassLoading());
+    try {
+      await client.auth.resetPasswordForEmail(email);
+      emit(ResetPassSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(ResetPassError());
+    }
+  }
+
   //!!! For udemy course
 
   // GoogleSignInAccount? googleUser;

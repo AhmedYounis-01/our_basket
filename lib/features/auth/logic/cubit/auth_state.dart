@@ -42,3 +42,9 @@ final class LogoutLoading extends AuthState {}
 final class LogoutSuccess extends AuthState {}
 
 final class LogoutError extends AuthState {}
+
+final class ResetPassLoading extends AuthState {}
+
+final class ResetPassSuccess extends AuthState {}
+
+final class ResetPassError extends AuthState {}
