@@ -48,3 +48,9 @@ final class ResetPassLoading extends AuthState {}
 final class ResetPassSuccess extends AuthState {}
 
 final class ResetPassError extends AuthState {}
+
+final class AddUserLoading extends AuthState {}
+
+final class AddUserSuccess extends AuthState {}
+
+final class AddUserError extends AuthState {}

@@ -101,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               : Icons.visibility_off,
                                         ),
                                       ),
-                                      obscureTxt: true,
+                                      obscureTxt: !isVisible,
                                       controller: _passwordController,
                                     ),
                                     SizedBox(height: 20),

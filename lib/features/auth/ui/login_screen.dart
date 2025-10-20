@@ -93,8 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             ),
                                             onPressed: () {
                                               setState(() {
-                                                
-                                              isVisible = !isVisible;
+                                                isVisible = !isVisible;
                                               });
                                             },
                                           ),
