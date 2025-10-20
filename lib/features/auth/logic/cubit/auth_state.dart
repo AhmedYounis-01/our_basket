@@ -37,8 +37,8 @@ final class GoogleSignInSuccess extends AuthState {}
 
 final class GoogleSignInError extends AuthState {}
 
-// final class LogOutLoading extends AuthState {}
+final class LogoutLoading extends AuthState {}
 
-// final class LogOutSuccess extends AuthState {}
+final class LogoutSuccess extends AuthState {}
 
-// final class LogOutError extends AuthState {}
+final class LogoutError extends AuthState {}

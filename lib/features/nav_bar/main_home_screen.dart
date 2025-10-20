@@ -18,15 +18,15 @@ class MainHomeScreen extends StatelessWidget {
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: cubit.pages[state.currentIndex],
+                child: cubit.pages[0],
               ),
             ),
             bottomNavigationBar: CurvedNavigationBar(
               index: state.currentIndex,
               height: 60,
-              backgroundColor: Colors.transparent,
-              color: Colors.blue,
-              buttonBackgroundColor: Colors.blue,
+              backgroundColor: Colors.red,
+              color: Colors.red,
+              buttonBackgroundColor: Colors.red,
               animationDuration: const Duration(milliseconds: 300),
               items: const [
                 Icon(Icons.home, size: 30, color: Colors.white),
@@ -35,7 +35,7 @@ class MainHomeScreen extends StatelessWidget {
                 Icon(Icons.person, size: 30, color: Colors.white),
               ],
               onTap: (index) {
-                context.read<NavBarCubit>().changeTab(index);
+                cubit.changeTab(index);
               },
             ),
           );

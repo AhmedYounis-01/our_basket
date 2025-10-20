@@ -12,7 +12,6 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
   SupabaseClient client = Supabase.instance.client;
-  // bool isVisible = false;
 
   late final GoogleSignIn _googleSignIn;
   static const String _webClientId =
@@ -22,11 +21,6 @@ class AuthCubit extends Cubit<AuthState> {
     _googleSignIn = GoogleSignIn.instance;
     unawaited(_googleSignIn.initialize(serverClientId: _webClientId));
   }
-
-  // void isPassVisible() {
-  //   isVisible = !isVisible;
-  //   emit(PasswordVisibality());
-  // }
 
   Future<void> login({required String email, required String password}) async {
     emit(LoginLoading());
@@ -110,11 +104,14 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> googleSignOut() async {
+  Future<void> logout() async {
     try {
-      await _googleSignIn.signOut();
+      emit(LogoutLoading());
+      await client.auth.signOut();
+      emit(LogoutSuccess());
     } catch (e) {
-      log('Google Sign-Out Error: $e');
+      log('Sign-Out Error: $e');
+      emit(LogoutError());
     }
   }
 
