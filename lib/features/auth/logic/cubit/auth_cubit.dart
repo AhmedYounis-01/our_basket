@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:e_commerce_supabase/features/auth/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -26,6 +27,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(LoginLoading());
     try {
       await client.auth.signInWithPassword(email: email, password: password);
+      await getUserData();
       emit(LoginSuccess());
     } on AuthException catch (e) {
       log(e.toString());
@@ -45,6 +47,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       await client.auth.signUp(email: email, password: password);
       await insertUser(name: name, email: email);
+      await getUserData();
       emit(RegisterSuccess());
     } on AuthException catch (e) {
       log(e.toString());
@@ -95,7 +98,7 @@ class AuthCubit extends Cubit<AuthState> {
         name: googleAccount.displayName!,
         email: googleAccount.email,
       );
-
+      await getUserData();
       emit(GoogleSignInSuccess());
       return response;
     } on AuthException catch (e) {
@@ -144,6 +147,25 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       log(e.toString());
       emit(AddUserError());
+    }
+  }
+
+  UserModel? userModel;
+  Future<void> getUserData() async {
+    emit(GetUserDataLoading());
+    try {
+      final data = await client
+          .from('users')
+          .select()
+          .eq("id", client.auth.currentUser!.id)
+          .single(); // to get on row(one user)
+
+      userModel = UserModel.fromJson(data);
+      log(data.toString());
+      emit(GetUserDataSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(GetUserDataError());
     }
   }
 

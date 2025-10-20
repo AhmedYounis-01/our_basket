@@ -54,3 +54,9 @@ final class AddUserLoading extends AuthState {}
 final class AddUserSuccess extends AuthState {}
 
 final class AddUserError extends AuthState {}
+
+final class GetUserDataLoading extends AuthState {}
+
+final class GetUserDataSuccess extends AuthState {}
+
+final class GetUserDataError extends AuthState {}

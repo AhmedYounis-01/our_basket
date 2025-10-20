@@ -33,10 +33,10 @@ class OurMarket extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.kScaffoldColor,
         useMaterial3: true,
       ),
-      // home: client.auth.currentUser != null
-      //     ? MainHomeScreen()
-      //     : const LoginScreen(),
-      home: const LoginScreen(),
+      home: client.auth.currentUser != null
+          ? MainHomeScreen()
+          : const LoginScreen(),
+      // home: const LoginScreen(),
     );
   }
 }

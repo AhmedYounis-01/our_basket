@@ -3,6 +3,7 @@ import 'package:e_commerce_supabase/core/function/navigate_to.dart';
 import 'package:e_commerce_supabase/core/function/navigate_without_back.dart';
 import 'package:e_commerce_supabase/core/utils/colors.dart';
 import 'package:e_commerce_supabase/features/auth/logic/cubit/auth_cubit.dart';
+import 'package:e_commerce_supabase/features/auth/models/user_model.dart';
 import 'package:e_commerce_supabase/features/auth/ui/login_screen.dart';
 import 'package:e_commerce_supabase/features/profile/ui/edit_name_screen.dart';
 import 'package:e_commerce_supabase/features/profile/ui/my_orders.dart';
@@ -16,7 +17,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthCubit(),
+      create: (context) => AuthCubit()..getUserData(),
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is LogoutSuccess) {
@@ -24,8 +25,13 @@ class ProfileScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return state is LoginLoading
+          // اجلب الـ userModel من الـ Cubit مباشرة
+          UserModel? userData = context.read<AuthCubit>().userModel;
+
+          return state is LoginLoading || state is GetUserDataLoading
               ? const CustomCircularIndicator()
+              : userData == null
+              ? const Center(child: Text('No user data available'))
               : Center(
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * .70,
@@ -47,13 +53,13 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              "User Name",
+                              userData.name,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(height: 10),
-                            Text("User Email"),
+                            Text(userData.email),
                             const SizedBox(height: 10),
                             CustomRowBtn(
                               onTap: () =>
@@ -71,9 +77,7 @@ class ProfileScreen extends StatelessWidget {
                             const SizedBox(height: 10),
                             CustomRowBtn(
                               onTap: () async {
-                                await context
-                                    .read<AuthCubit>()
-                                    .logout();
+                                await context.read<AuthCubit>().logout();
                               },
                               icon: Icons.logout,
                               text: "Logout",
