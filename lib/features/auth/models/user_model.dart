@@ -1,11 +1,7 @@
 class UserModel {
   String userId, name, email;
-  
-  UserModel({
-    required this.email,
-    required this.name,
-    required this.userId,
-  });
+
+  UserModel({required this.email, required this.name, required this.userId});
 
   // fromJson factory method
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -18,10 +14,6 @@ class UserModel {
 
   // toJson method (مفيدة للإضافة أو التحديث)
   Map<String, dynamic> toJson() {
-    return {
-      'id': userId,
-      'name': name,
-      'email': email,
-    };
+    return {'id': userId, 'name': name, 'email': email};
   }
 }

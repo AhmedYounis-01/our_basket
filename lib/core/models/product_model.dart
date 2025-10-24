@@ -36,11 +36,13 @@ class ProductModel {
       description: json['description'],
       category: json['category'],
       imageUrl: json['image_url'],
-      favoriteProducts: (json['favorite_products'] as List<dynamic>?)
+      favoriteProducts:
+          (json['favorite_products'] as List<dynamic>?)
               ?.map((e) => FavoriteProduct.fromJson(e))
               .toList() ??
           [],
-      purchase: (json['purchase'] as List<dynamic>?)
+      purchase:
+          (json['purchase'] as List<dynamic>?)
               ?.map((e) => Purchase.fromJson(e))
               .toList() ??
           [],
@@ -58,8 +60,7 @@ class ProductModel {
       'description': description,
       'category': category,
       'image_url': imageUrl,
-      'favorite_products':
-          favoriteProducts.map((e) => e.toJson()).toList(),
+      'favorite_products': favoriteProducts.map((e) => e.toJson()).toList(),
       'purchase': purchase.map((e) => e.toJson()).toList(),
     };
   }

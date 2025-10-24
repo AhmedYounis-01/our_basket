@@ -1,4 +1,3 @@
- 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -15,9 +14,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Product Name"),
-      ),
+      appBar: AppBar(title: const Text("Product Name")),
       body: ListView(
         children: [
           Container(
@@ -28,8 +25,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -58,10 +54,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   children: [
                     Row(
                       children: [
-                        const Text(
-                          "4.5 ",
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        const Text("4.5 ", style: TextStyle(fontSize: 16)),
                         const Icon(Icons.star, color: Colors.amber),
                       ],
                     ),
@@ -81,10 +74,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   allowHalfRating: false,
                   itemCount: 5,
                   itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
+                  itemBuilder: (context, _) =>
+                      const Icon(Icons.star, color: Colors.amber),
                   onRatingUpdate: (rating) {},
                 ),
                 const SizedBox(height: 40),
@@ -104,15 +95,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 const SizedBox(height: 15),
                 const Text(
                   "Comments",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
