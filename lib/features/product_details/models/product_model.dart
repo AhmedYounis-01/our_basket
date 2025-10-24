@@ -1,11 +1,11 @@
-class ProductDetailsModel {
+class RateModel {
   int? id;
   DateTime? createdAt;
   int? rate;
   String? forUsers;
   String? forProducts;
 
-  ProductDetailsModel({
+  RateModel({
     this.id,
     this.createdAt,
     this.rate,
@@ -13,7 +13,7 @@ class ProductDetailsModel {
     this.forProducts,
   });
 
-  factory ProductDetailsModel.fromJson(Map<String, dynamic> json) => ProductDetailsModel(
+  factory RateModel.fromJson(Map<String, dynamic> json) => RateModel(
     id: json['id'] as int?,
     createdAt: json['created_at'] == null
         ? null

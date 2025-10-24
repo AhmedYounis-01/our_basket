@@ -12,6 +12,7 @@ class CustomNetworkImage extends StatelessWidget {
       imageUrl: url,
       placeholder: (context, url) => CustomCircularIndicator(),
       errorWidget: (context, url, error) => const Icon(Icons.error),
+      fit: BoxFit.cover,
     );
   }
 }

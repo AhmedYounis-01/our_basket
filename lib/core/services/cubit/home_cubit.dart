@@ -22,7 +22,7 @@ class HomeCubit extends Cubit<HomeState> {
       for (final item in (response.data as List<dynamic>)) {
         product.add(ProductModel.fromJson(item as Map<String, dynamic>));
       }
-      log(response.data.toString());
+      // log(response.data.toString());
       emit(HomeSuccess());
     } catch (e) {
       log(e.toString());

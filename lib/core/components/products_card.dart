@@ -13,7 +13,10 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => navigateTo(context, ProductDetailsView()),
+      onTap: () => navigateTo(
+        context,
+        ProductDetailsScreen(product: product),
+      ),
       child: Card(
         color: Colors.white,
         margin: const EdgeInsets.all(8),
