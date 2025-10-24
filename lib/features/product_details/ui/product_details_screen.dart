@@ -102,7 +102,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   ),
                                   const SizedBox(height: 20),
                                   RatingBar.builder(
-                                    initialRating: 0,
+                                    initialRating: cubit.userRate.toDouble(),
                                     minRating: 1,
                                     direction: Axis.horizontal,
                                     allowHalfRating: false,
