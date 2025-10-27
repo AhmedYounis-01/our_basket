@@ -13,10 +13,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => navigateTo(
-        context,
-        ProductDetailsScreen(product: product),
-      ),
+      onTap: () => navigateTo(context, ProductDetailsScreen(product: product)),
       child: Card(
         color: Colors.white,
         margin: const EdgeInsets.all(8),
@@ -34,7 +31,11 @@ class ProductCard extends StatelessWidget {
                     topRight: Radius.circular(16),
                     bottomLeft: Radius.circular(16),
                   ),
-                  child: CustomNetworkImage(url: product.imageUrl),
+                  child: SizedBox(
+                    height: 250,
+                    width: double.infinity,
+                    child: CustomNetworkImage(url: product.imageUrl),
+                  ),
                 ),
                 ClipRRect(
                   borderRadius: const BorderRadius.only(

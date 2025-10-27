@@ -24,9 +24,9 @@ class MainHomeScreen extends StatelessWidget {
             bottomNavigationBar: CurvedNavigationBar(
               index: state.currentIndex,
               height: 60,
-              backgroundColor: Colors.red,
-              color: Colors.red,
-              buttonBackgroundColor: Colors.red,
+              backgroundColor: Colors.transparent,
+              color: Colors.blue,
+              buttonBackgroundColor: Colors.blue,
               animationDuration: const Duration(milliseconds: 300),
               items: const [
                 Icon(Icons.home, size: 30, color: Colors.white),
