@@ -14,7 +14,7 @@ class ApiSevices {
   Future<Response> postData(String path, Map<String, dynamic> data) async =>
       await _dio.post(path, data: data);
 
-  Future<Response> pathData(String path, Map<String, dynamic> data) async =>
+  Future<Response> patchData(String path, Map<String, dynamic> data) async =>
       await _dio.patch(path, data: data);
 
   Future<Response> deleteData(String path) async => await _dio.delete(path);
