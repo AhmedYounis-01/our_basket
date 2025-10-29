@@ -3,7 +3,6 @@ import 'package:e_commerce_supabase/core/components/custom_net_img.dart';
 import 'package:e_commerce_supabase/core/function/navigate_without_back.dart';
 import 'package:e_commerce_supabase/core/models/product_model.dart';
 import 'package:e_commerce_supabase/features/auth/logic/cubit/auth_cubit.dart';
-import 'package:e_commerce_supabase/features/auth/models/user_model.dart';
 import 'package:e_commerce_supabase/features/product_details/logic/cubit/productdetails_cubit.dart';
 import 'package:e_commerce_supabase/features/product_details/ui/widget/comments_list.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(context.read<AuthCubit>().userModel?.name);
     return BlocProvider(
       create: (context) =>
           ProductdetailsCubit()..getRates(productId: widget.product.productId),
@@ -41,7 +39,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         },
         builder: (context, state) {
           ProductdetailsCubit cubit = context.read<ProductdetailsCubit>();
-          UserModel? userData = context.read<AuthCubit>().userModel;
 
           return Scaffold(
             appBar: AppBar(title: Text(widget.product.productName)),
@@ -149,15 +146,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 suffixIcon: IconButton(
-                                  onPressed: () {
-                                    cubit.addComments(
+                                  onPressed: () async {
+                                    await context
+                                        .read<AuthCubit>()
+                                        .getUserData();
+                                    await cubit.addComments(
                                       data: {
                                         "comment": _commentController.text,
                                         "for_users": cubit.userId,
                                         "for_products":
                                             widget.product.productId,
-                                        "user_name": userData?.name,
-                                        "replay": "this is a replay",
+                                        "user_name":
+                                            // ignore: use_build_context_synchronously
+                                            context
+                                                .read<AuthCubit>()
+                                                .userModel
+                                                ?.name ??
+                                            "User Name",
                                       },
                                     );
                                     _commentController.clear();

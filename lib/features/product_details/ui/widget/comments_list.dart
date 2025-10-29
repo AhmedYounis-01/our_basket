@@ -10,9 +10,9 @@ class CommentsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: Supabase.instance.client
-          .from("comments_table")
+          .from("comments")
           .stream(primaryKey: ["id"])
-          .eq("for_product", productModel.productId)
+          .eq("for_products", productModel.productId)
           .order("created_at"),
       builder: (_, snapshot) {
         List<Map<String, dynamic>>? data = snapshot.data;
@@ -41,6 +41,7 @@ class CommentsList extends StatelessWidget {
 
 class UserComment extends StatelessWidget {
   const UserComment({super.key, required this.commentData});
+  // this structural programming not good , but to save time i used it ,, //! better use model class
   final Map<String, dynamic>? commentData;
   @override
   Widget build(BuildContext context) {
