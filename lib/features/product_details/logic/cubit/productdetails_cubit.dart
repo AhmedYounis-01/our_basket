@@ -50,7 +50,9 @@ class ProductdetailsCubit extends Cubit<ProductdetailsState> {
         avgRates += avgUser.rate!;
       }
     }
-    avgRates = rates.isNotEmpty ? (avgRates ~/ rates.length) : 0;
+    if (rates.isNotEmpty) {
+      avgRates = rates.isNotEmpty ? (avgRates ~/ rates.length) : 0;
+    }
   }
 
   bool _isUserRateExist({required String productId}) {
@@ -66,6 +68,7 @@ class ProductdetailsCubit extends Cubit<ProductdetailsState> {
     required String productId,
     required Map<String, dynamic> data,
   }) async {
+    emit(AddOrUpdateRateLoading());
     final String path =
         'rates?select=*&for_users=eq.$userId&for_products=eq.$productId';
     try {
@@ -76,8 +79,22 @@ class ProductdetailsCubit extends Cubit<ProductdetailsState> {
         // add rate
         await _apiSevices.postData(path, data);
       }
+      emit(AddOrUpdateRateSuccess());
     } catch (e) {
       log(e.toString());
+      emit(AddOrUpdateRateError());
+    }
+  }
+
+  Future<void> addComments({required Map<String, dynamic> data}) async {
+    emit(AddCommentsLoading());
+    const String path = 'comments';
+    try {
+      await _apiSevices.postData(path, data);
+      emit(AddCommentsSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(AddCommentsError());
     }
   }
 }

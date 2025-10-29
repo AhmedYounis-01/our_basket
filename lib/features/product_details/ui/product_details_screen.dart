@@ -1,7 +1,11 @@
 import 'package:e_commerce_supabase/core/components/custom_circular_ind.dart';
 import 'package:e_commerce_supabase/core/components/custom_net_img.dart';
+import 'package:e_commerce_supabase/core/function/navigate_without_back.dart';
 import 'package:e_commerce_supabase/core/models/product_model.dart';
+import 'package:e_commerce_supabase/features/auth/logic/cubit/auth_cubit.dart';
+import 'package:e_commerce_supabase/features/auth/models/user_model.dart';
 import 'package:e_commerce_supabase/features/product_details/logic/cubit/productdetails_cubit.dart';
+import 'package:e_commerce_supabase/features/product_details/ui/widget/comments_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -25,13 +29,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(context.read<AuthCubit>().userModel?.name);
     return BlocProvider(
       create: (context) =>
           ProductdetailsCubit()..getRates(productId: widget.product.productId),
       child: BlocConsumer<ProductdetailsCubit, ProductdetailsState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is AddOrUpdateRateSuccess) {
+            navigateWithoutBack(context, widget);
+          }
+        },
         builder: (context, state) {
           ProductdetailsCubit cubit = context.read<ProductdetailsCubit>();
+          UserModel? userData = context.read<AuthCubit>().userModel;
+
           return Scaffold(
             appBar: AppBar(title: Text(widget.product.productName)),
             body: state is GetRateLoading
@@ -114,7 +125,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       Icons.star,
                                       color: Colors.amber,
                                     ),
-                                    onRatingUpdate: (rating) {},
+                                    onRatingUpdate: (rating) {
+                                      cubit.addOrUpdateRate(
+                                        productId: widget.product.productId,
+                                        data: {
+                                          "rate": rating.toInt(),
+                                          "for_users": cubit.userId,
+                                          "for_products":
+                                              widget.product.productId,
+                                        },
+                                      );
+                                    },
                                   ),
                                 ],
                               ),
@@ -128,7 +149,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 suffixIcon: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    cubit.addComments(
+                                      data: {
+                                        "comment": _commentController.text,
+                                        "for_users": cubit.userId,
+                                        "for_products":
+                                            widget.product.productId,
+                                        "user_name": userData?.name,
+                                        "replay": "this is a replay",
+                                      },
+                                    );
+                                    _commentController.clear();
+                                  },
                                   icon: const Icon(Icons.send),
                                 ),
                               ),
@@ -142,6 +175,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                             const SizedBox(height: 20),
+                            CommentsList(productModel: widget.product),
                           ],
                         ),
                       ),

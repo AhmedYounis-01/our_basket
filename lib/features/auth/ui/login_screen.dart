@@ -34,149 +34,146 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is LoginSuccess || state is GoogleSignInSuccess) {
-            navigateWithoutBack(context, MainHomeScreen());
-          }
-          if (state is LoginError) showMsg(context, state.msg);
-        },
-        builder: (context, state) {
-          AuthCubit cubit = context.read<AuthCubit>();
-          return Scaffold(
-            body: state is LoginLoading
-                ? Center(child: const CustomCircularIndicator())
-                : SafeArea(
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 50),
-                            Text(
-                              'Welcome to Our Market',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is LoginSuccess || state is GoogleSignInSuccess) {
+          navigateWithoutBack(context, MainHomeScreen());
+        }
+        if (state is LoginError) showMsg(context, state.msg);
+      },
+      builder: (context, state) {
+        AuthCubit cubit = context.read<AuthCubit>();
+        return Scaffold(
+          body: state is LoginLoading
+              ? Center(child: const CustomCircularIndicator())
+              : SafeArea(
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 50),
+                          Text(
+                            'Welcome to Our Market',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Card(
+                            color: Colors.white,
+                            margin: EdgeInsets.all(24),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16),
                               ),
                             ),
-                            SizedBox(height: 20),
-                            Card(
-                              color: Colors.white,
-                              margin: EdgeInsets.all(24),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(16),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  children: [
-                                    CustomTextFormField(
-                                      labelText: "Email",
-                                      keyboardType: TextInputType.emailAddress,
-                                      controller: _emailController,
-                                    ),
-                                    SizedBox(height: 20),
-                                    BlocBuilder<AuthCubit, AuthState>(
-                                      builder: (context, state) {
-                                        return CustomTextFormField(
-                                          labelText: "Password",
-                                          suffixIcon: IconButton(
-                                            icon: Icon(
-                                              isVisible
-                                                  ? Icons.visibility
-                                                  : Icons.visibility_off,
-                                            ),
-                                            onPressed: () {
-                                              setState(() {
-                                                isVisible = !isVisible;
-                                              });
-                                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  CustomTextFormField(
+                                    labelText: "Email",
+                                    keyboardType: TextInputType.emailAddress,
+                                    controller: _emailController,
+                                  ),
+                                  SizedBox(height: 20),
+                                  BlocBuilder<AuthCubit, AuthState>(
+                                    builder: (context, state) {
+                                      return CustomTextFormField(
+                                        labelText: "Password",
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            isVisible
+                                                ? Icons.visibility
+                                                : Icons.visibility_off,
                                           ),
-                                          obscureTxt: !isVisible,
-                                          controller: _passwordController,
-                                        );
+                                          onPressed: () {
+                                            setState(() {
+                                              isVisible = !isVisible;
+                                            });
+                                          },
+                                        ),
+                                        obscureTxt: !isVisible,
+                                        controller: _passwordController,
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: 20),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        navigateTo(context, ForgotScreen());
                                       },
-                                    ),
-                                    SizedBox(height: 20),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: TextButton(
-                                        onPressed: () {
-                                          navigateTo(context, ForgotScreen());
-                                        },
-                                        child: Text(
-                                          "Forgot Password?",
-                                          style: TextStyle(
-                                            color: AppColors.kPrimaryColor,
-                                          ),
+                                      child: Text(
+                                        "Forgot Password?",
+                                        style: TextStyle(
+                                          color: AppColors.kPrimaryColor,
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 20),
-                                    CustomRowWithArrowBtn(
-                                      text: "Login",
-                                      icon: Icon(Icons.arrow_forward),
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          cubit.login(
-                                            email: _emailController.text,
-                                            password: _passwordController.text,
+                                  ),
+                                  SizedBox(height: 20),
+                                  CustomRowWithArrowBtn(
+                                    text: "Login",
+                                    icon: Icon(Icons.arrow_forward),
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        cubit.login(
+                                          email: _emailController.text,
+                                          password: _passwordController.text,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(height: 25),
+                                  CustomRowWithArrowBtn(
+                                    text: "Login With Google",
+                                    icon: Icon(Icons.arrow_forward),
+                                    onPressed: () => cubit.googleSignIn(),
+                                  ),
+                                  SizedBox(height: 25),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Don't have an account?",
+                                        style: TextStyle(
+                                          color: AppColors.kBlackColor,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          navigateTo(
+                                            context,
+                                            RegisterScreen(),
                                           );
-                                        }
-                                      },
-                                    ),
-                                    SizedBox(height: 25),
-                                    CustomRowWithArrowBtn(
-                                      text: "Login With Google",
-                                      icon: Icon(Icons.arrow_forward),
-                                      onPressed: () => cubit.googleSignIn(),
-                                    ),
-                                    SizedBox(height: 25),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Don't have an account?",
+                                        },
+                                        child: Text(
+                                          "Register",
                                           style: TextStyle(
-                                            color: AppColors.kBlackColor,
+                                            color: AppColors.kPrimaryColor,
                                             fontSize: 12,
                                           ),
                                         ),
-                                        TextButton(
-                                          onPressed: () {
-                                            navigateTo(
-                                              context,
-                                              RegisterScreen(),
-                                            );
-                                          },
-                                          child: Text(
-                                            "Register",
-                                            style: TextStyle(
-                                              color: AppColors.kPrimaryColor,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-          );
-        },
-      ),
+                ),
+        );
+      },
     );
   }
 }

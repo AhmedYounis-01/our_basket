@@ -1,7 +1,9 @@
 import 'package:e_commerce_supabase/core/utils/colors.dart';
+import 'package:e_commerce_supabase/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:e_commerce_supabase/features/auth/ui/login_screen.dart';
 import 'package:e_commerce_supabase/features/home/ui/main_home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class OurMarket extends StatelessWidget {
@@ -10,16 +12,19 @@ class OurMarket extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SupabaseClient client = Supabase.instance.client;
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: AppColors.kScaffoldColor,
-        useMaterial3: true,
+    return BlocProvider(
+      create: (context) => AuthCubit()..getUserData(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: AppColors.kScaffoldColor,
+          useMaterial3: true,
+        ),
+        home: client.auth.currentUser != null
+            ? MainHomeScreen()
+            : const LoginScreen(),
+        // home: const LoginScreen(),
       ),
-      home: client.auth.currentUser != null
-          ? MainHomeScreen()
-          : const LoginScreen(),
-      // home: const LoginScreen(),
     );
   }
 }

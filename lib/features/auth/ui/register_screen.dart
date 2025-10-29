@@ -34,149 +34,146 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is RegisterSuccess || state is GoogleSignInSuccess) {
-            navigateWithoutBack(context, MainHomeScreen());
-          }
-          if (state is RegisterError) showMsg(context, state.msg);
-        },
-        builder: (context, state) {
-          AuthCubit cubit = context.read<AuthCubit>();
-          return Scaffold(
-            body: state is RegisterLoading
-                ? Center(child: const CustomCircularIndicator())
-                : SafeArea(
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 50),
-                            Text(
-                              'Welcome to Our Market',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is RegisterSuccess || state is GoogleSignInSuccess) {
+          navigateWithoutBack(context, MainHomeScreen());
+        }
+        if (state is RegisterError) showMsg(context, state.msg);
+      },
+      builder: (context, state) {
+        AuthCubit cubit = context.read<AuthCubit>();
+        return Scaffold(
+          body: state is RegisterLoading
+              ? Center(child: const CustomCircularIndicator())
+              : SafeArea(
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 50),
+                          Text(
+                            'Welcome to Our Market',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Card(
+                            color: Colors.white,
+                            margin: EdgeInsets.all(24),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(16),
                               ),
                             ),
-                            SizedBox(height: 20),
-                            Card(
-                              color: Colors.white,
-                              margin: EdgeInsets.all(24),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(16),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  children: [
-                                    CustomTextFormField(
-                                      labelText: "Name",
-                                      keyboardType: TextInputType.name,
-                                      controller: _nameController,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  CustomTextFormField(
+                                    labelText: "Name",
+                                    keyboardType: TextInputType.name,
+                                    controller: _nameController,
+                                  ),
+                                  SizedBox(height: 20),
+                                  CustomTextFormField(
+                                    labelText: "Email",
+                                    keyboardType: TextInputType.emailAddress,
+                                    controller: _emailController,
+                                  ),
+                                  SizedBox(height: 20),
+                                  CustomTextFormField(
+                                    labelText: "Password",
+                                    suffixIcon: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isVisible = !isVisible;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        isVisible
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                      ),
                                     ),
-                                    SizedBox(height: 20),
-                                    CustomTextFormField(
-                                      labelText: "Email",
-                                      keyboardType: TextInputType.emailAddress,
-                                      controller: _emailController,
-                                    ),
-                                    SizedBox(height: 20),
-                                    CustomTextFormField(
-                                      labelText: "Password",
-                                      suffixIcon: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            isVisible = !isVisible;
-                                          });
-                                        },
-                                        icon: Icon(
-                                          isVisible
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
+                                    obscureTxt: !isVisible,
+                                    controller: _passwordController,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        navigateTo(context, ForgotScreen());
+                                      },
+                                      child: Text(
+                                        "Forgot Password?",
+                                        style: TextStyle(
+                                          color: AppColors.kPrimaryColor,
                                         ),
                                       ),
-                                      obscureTxt: !isVisible,
-                                      controller: _passwordController,
                                     ),
-                                    SizedBox(height: 20),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: TextButton(
+                                  ),
+                                  SizedBox(height: 20),
+                                  CustomRowWithArrowBtn(
+                                    text: "Register",
+                                    icon: Icon(Icons.arrow_forward),
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        cubit.register(
+                                          name: _nameController.text,
+                                          email: _emailController.text,
+                                          password: _passwordController.text,
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(height: 25),
+                                  CustomRowWithArrowBtn(
+                                    text: "Register With Google",
+                                    icon: Icon(Icons.arrow_forward),
+                                    onPressed: () => cubit.googleSignIn(),
+                                  ),
+                                  SizedBox(height: 25),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Already have an account?",
+                                        style: TextStyle(
+                                          color: AppColors.kBlackColor,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      TextButton(
                                         onPressed: () {
-                                          navigateTo(context, ForgotScreen());
+                                          Navigator.pop(context);
                                         },
                                         child: Text(
-                                          "Forgot Password?",
+                                          "Login",
                                           style: TextStyle(
                                             color: AppColors.kPrimaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 20),
-                                    CustomRowWithArrowBtn(
-                                      text: "Register",
-                                      icon: Icon(Icons.arrow_forward),
-                                      onPressed: () {
-                                        if (_formKey.currentState!.validate()) {
-                                          cubit.register(
-                                            name: _nameController.text,
-                                            email: _emailController.text,
-                                            password: _passwordController.text,
-                                          );
-                                        }
-                                      },
-                                    ),
-                                    SizedBox(height: 25),
-                                    CustomRowWithArrowBtn(
-                                      text: "Register With Google",
-                                      icon: Icon(Icons.arrow_forward),
-                                      onPressed: () => cubit.googleSignIn(),
-                                    ),
-                                    SizedBox(height: 25),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Already have an account?",
-                                          style: TextStyle(
-                                            color: AppColors.kBlackColor,
                                             fontSize: 12,
                                           ),
                                         ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            "Login",
-                                            style: TextStyle(
-                                              color: AppColors.kPrimaryColor,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-          );
-        },
-      ),
+                ),
+        );
+      },
     );
   }
 }
