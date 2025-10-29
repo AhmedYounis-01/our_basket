@@ -1,5 +1,7 @@
 import 'package:e_commerce_supabase/core/components/custom_search_filed.dart';
 import 'package:e_commerce_supabase/core/components/product_list.dart';
+import 'package:e_commerce_supabase/core/function/navigate_to.dart';
+import 'package:e_commerce_supabase/features/home/ui/search_screen.dart';
 import 'package:e_commerce_supabase/features/home/ui/widgets/categories_list.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +11,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        const CustomSearchField(),
+        CustomSearchField(
+          onPressed: () => navigateTo(context, const SearchScreen()),
+        ),
         const SizedBox(height: 15),
         Image.asset("assets/images/buy.jpg"),
         const SizedBox(height: 10),

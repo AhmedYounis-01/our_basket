@@ -2,8 +2,9 @@ import 'package:e_commerce_supabase/core/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomSearchField extends StatelessWidget {
-  const CustomSearchField({super.key});
-
+  const CustomSearchField({super.key, this.onPressed, this.searchController});
+  final TextEditingController? searchController;
+  final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -11,6 +12,7 @@ class CustomSearchField extends StatelessWidget {
       child: SizedBox(
         height: 50,
         child: TextField(
+          controller: searchController,
           decoration: InputDecoration(
             suffixIcon: SizedBox(
               height: double.infinity,
@@ -22,7 +24,7 @@ class CustomSearchField extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: onPressed,
                 child: const Icon(Icons.search),
               ),
             ),
