@@ -6,17 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductsList extends StatelessWidget {
-  const ProductsList({super.key, this.shrinkWrap, this.physics});
+  const ProductsList({super.key, this.shrinkWrap, this.physics, this.query});
   final bool? shrinkWrap;
   final ScrollPhysics? physics;
+  final String? query;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..getproducts(),
+      create: (context) => HomeCubit()..getproducts(qurey: query),
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {},
         builder: (context, state) {
-          List<ProductModel> products = context.read<HomeCubit>().product;
+          List<ProductModel> products = query != null && query!.isNotEmpty
+              ? context.read<HomeCubit>().searchResults
+              : context.read<HomeCubit>().products;
           return state is HomeLoading
               ? const Center(child: CustomCircularIndicator())
               : ListView.builder(
