@@ -23,8 +23,31 @@ class HomeCubit extends Cubit<HomeState> {
         'products?select=*,favorite_products(*),purchase(*)',
       );
       products.clear();
+      // clear auxiliary lists/maps to avoid duplications when re-fetching
+      searchResults.clear();
+      categoryProducts.clear();
+      favoriteProducts.clear();
       for (final item in (response.data as List<dynamic>)) {
-        products.add(ProductModel.fromJson(item as Map<String, dynamic>));
+        final product = ProductModel.fromJson(item as Map<String, dynamic>);
+        products.add(product);
+
+        // The API returns nested favorite_products for each product (because of
+        // the `favorite_products(*)` select). If there's an entry for the
+        // current user, mark the product as favorite so it persists across restarts.
+        try {
+          final favs = (item)['favorite_products'];
+          if (favs is List) {
+            for (final fav in favs) {
+              if (fav is Map<String, dynamic>) {
+                final forUsers = fav['for_users'];
+                if (forUsers != null && forUsers == userId) {
+                  favoriteProducts[product.productId] = true;
+                  break;
+                }
+              }
+            }
+          }
+        } catch (_) {}
       }
       // log(response.data.toString());
       search(qurey);
@@ -37,6 +60,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void search(String? qurey) {
+    searchResults.clear();
     if (qurey != null && qurey.isNotEmpty) {
       for (var product in products) {
         if (product.productName.toLowerCase().contains(qurey.toLowerCase())) {
@@ -47,6 +71,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void getProuductsOfCategory(String? category) {
+    categoryProducts.clear();
     if (category != null && category.isNotEmpty) {
       for (var product in products) {
         if (product.category.toLowerCase().trim() ==
@@ -57,6 +82,8 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  Map<String, bool> favoriteProducts = {};
+
   Future<void> addToFavorites(String productId) async {
     try {
       emit(AddToFavoriteLoading());
@@ -64,11 +91,16 @@ class HomeCubit extends Cubit<HomeState> {
         'is_favorite': true,
         'for_users': userId,
         'for_products': productId,
-      }); 
+      });
+      favoriteProducts.addAll({productId: true});
       emit(AddToFavoriteSuccess());
     } catch (e) {
       log(e.toString());
       emit(AddToFavoriteError());
     }
+  }
+
+  bool checkIfFavoureite(productId) {
+    return favoriteProducts.containsKey(productId);
   }
 }
