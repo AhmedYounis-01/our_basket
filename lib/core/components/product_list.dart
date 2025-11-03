@@ -6,29 +6,62 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductsList extends StatelessWidget {
-  const ProductsList({super.key, this.shrinkWrap, this.physics, this.query});
-  final bool? shrinkWrap;
-  final ScrollPhysics? physics;
+  const ProductsList({super.key, this.query, this.category});
+
   final String? query;
+  final String? category;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..getproducts(qurey: query),
+      create: (context) =>
+          HomeCubit()..getproducts(qurey: query, category: category),
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {},
         builder: (context, state) {
           List<ProductModel> products = query != null && query!.isNotEmpty
               ? context.read<HomeCubit>().searchResults
+              : category != null && category!.isNotEmpty
+              ? context.read<HomeCubit>().categoryProducts
               : context.read<HomeCubit>().products;
-          return state is HomeLoading
-              ? const Center(child: CustomCircularIndicator())
-              : ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: products.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) =>
-                      ProductCard(product: products[index]),
-                );
+
+          if (state is HomeLoading) {
+            return const Center(child: CustomCircularIndicator());
+          }
+
+          if (products.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.shopping_basket_outlined,
+                    size: 64,
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    query != null && query!.isNotEmpty
+                        ? 'No products found for your search'
+                        : category != null && category!.isNotEmpty
+                        ? 'No products in this category yet'
+                        : 'No products available yet',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          //! >> use ListView.builder But Without (((shrinkWrap))) instead of column to improve performance
+          return Column(
+            children: products
+                .map((product) => ProductCard(product: product))
+                .toList(),
+          );
         },
       ),
     );

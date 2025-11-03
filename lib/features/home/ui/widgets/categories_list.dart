@@ -1,4 +1,6 @@
+import 'package:e_commerce_supabase/core/function/navigate_to.dart';
 import 'package:e_commerce_supabase/core/utils/colors.dart';
+import 'package:e_commerce_supabase/features/home/ui/category_screen.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesList extends StatelessWidget {
@@ -14,16 +16,22 @@ class CategoriesList extends StatelessWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: AppColors.kPrimaryColor,
-                  foregroundColor: AppColors.kWhiteColor,
-                  child: Icon(categories[index].icon, size: 40),
-                ),
-                Text(categories[index].text, style: TextStyle(fontSize: 10)),
-              ],
+            child: GestureDetector(
+              onTap: () => navigateTo(
+                context,
+                CategoryScreen(category: categories[index].text),
+              ),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: AppColors.kPrimaryColor,
+                    foregroundColor: AppColors.kWhiteColor,
+                    child: Icon(categories[index].icon, size: 40),
+                  ),
+                  Text(categories[index].text, style: TextStyle(fontSize: 10)),
+                ],
+              ),
             ),
           );
         },
