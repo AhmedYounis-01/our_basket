@@ -6,10 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductsList extends StatelessWidget {
-  const ProductsList({super.key, this.query, this.category});
+  const ProductsList({
+    super.key,
+    this.query,
+    this.category,
+    this.isFavoriteView = false,
+  });
 
   final String? query;
   final String? category;
+  final bool isFavoriteView;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +30,8 @@ class ProductsList extends StatelessWidget {
               ? homeCubit.searchResults
               : category != null && category!.isNotEmpty
               ? homeCubit.categoryProducts
+              : isFavoriteView
+              ? homeCubit.favoriteProductList
               : homeCubit.products;
 
           if (state is HomeLoading) {

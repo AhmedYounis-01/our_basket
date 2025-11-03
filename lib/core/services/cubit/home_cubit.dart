@@ -16,24 +16,32 @@ class HomeCubit extends Cubit<HomeState> {
   List<ProductModel> products = [];
   List<ProductModel> searchResults = [];
   List<ProductModel> categoryProducts = [];
+
+  //* Safe safeEmit to prevent safeEmitting states after the cubit is closed
+  void safeEmit(HomeState state) {
+    if (!isClosed) {
+      emit(state);
+    }
+  }
+
   Future<void> getProducts({String? qurey, String? category}) async {
-    emit(HomeLoading());
+    safeEmit(HomeLoading());
     try {
       final response = await _apiServices.getData(
         'products?select=*,favorite_products(*),purchase(*)',
       );
+      if (isClosed) return;
+
       products.clear();
-      // clear auxiliary lists/maps to avoid duplications when re-fetching
       searchResults.clear();
       categoryProducts.clear();
       favoriteProducts.clear();
+      favoriteProductList.clear();
       for (final item in (response.data as List<dynamic>)) {
         final product = ProductModel.fromJson(item as Map<String, dynamic>);
         products.add(product);
 
-        // The API returns nested favorite_products for each product (because of
-        // the `favorite_products(*)` select). If there's an entry for the
-        // current user, mark the product as favorite so it persists across restarts.
+        //* Check if product is favorited by current user from API response
         try {
           final favs = (item)['favorite_products'];
           if (favs is List) {
@@ -49,13 +57,15 @@ class HomeCubit extends Cubit<HomeState> {
           }
         } catch (_) {}
       }
-      // log(response.data.toString());
+      if (isClosed) return;
+
+      getFavoriteProducts();
       search(qurey);
       getProuductsOfCategory(category);
-      emit(HomeSuccess());
+      safeEmit(HomeSuccess());
     } catch (e) {
       log(e.toString());
-      emit(HomeError());
+      safeEmit(HomeError());
     }
   }
 
@@ -86,17 +96,24 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> addToFavorites(String productId) async {
     try {
-      emit(AddToFavoriteLoading());
+      safeEmit(AddToFavoriteLoading());
       await _apiServices.postData('favorite_products', {
         'is_favorite': true,
         'for_users': userId,
         'for_products': productId,
       });
+
+      if (isClosed) return;
+
+      await getProducts();
+
+      if (isClosed) return;
+
       favoriteProducts.addAll({productId: true});
-      emit(AddToFavoriteSuccess());
+      safeEmit(AddToFavoriteSuccess());
     } catch (e) {
       log(e.toString());
-      emit(AddToFavoriteError());
+      safeEmit(AddToFavoriteError());
     }
   }
 
@@ -105,17 +122,41 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> removeFavorite(String productId) async {
-    emit(RemoveFavoriteLoading());
+    safeEmit(RemoveFavoriteLoading());
     try {
       await _apiServices.deleteData(
         "favorite_products?for_users=eq.$userId&for_products=eq.$productId",
       );
+      if (isClosed) return;
+
       await getProducts();
+
+      if (isClosed) return;
+
       favoriteProducts.removeWhere((key, value) => key == productId);
-      emit(RemoveFavoriteSuccess());
+      safeEmit(RemoveFavoriteSuccess());
     } catch (e) {
       log(e.toString());
-      emit(RemoveFavoriteError());
+      safeEmit(RemoveFavoriteError());
+    }
+  }
+
+  List<ProductModel> favoriteProductList = [];
+  void getFavoriteProducts() {
+    favoriteProductList.clear();
+    for (ProductModel product in products) {
+      if (product.favoriteProducts.isNotEmpty) {
+        for (FavoriteProduct favoriteProduct in product.favoriteProducts) {
+          if (favoriteProduct.forUsers == userId) {
+            favoriteProductList.add(product);
+            //* add only one product for favorite
+            //! favoriteProducts[product.productId] = true;
+            //** add all favorite products
+            favoriteProducts.addAll({product.productId: true});
+            break;
+          }
+        }
+      }
     }
   }
 }
