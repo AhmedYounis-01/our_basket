@@ -10,16 +10,16 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
-  final ApiSevices _apiSevices = ApiSevices();
+  final ApiSevices _apiServices = ApiSevices();
   final String userId = Supabase.instance.client.auth.currentUser!.id;
 
   List<ProductModel> products = [];
   List<ProductModel> searchResults = [];
   List<ProductModel> categoryProducts = [];
-  Future<void> getproducts({String? qurey, String? category}) async {
+  Future<void> getProducts({String? qurey, String? category}) async {
     emit(HomeLoading());
     try {
-      final response = await _apiSevices.getData(
+      final response = await _apiServices.getData(
         'products?select=*,favorite_products(*),purchase(*)',
       );
       products.clear();
@@ -87,7 +87,7 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> addToFavorites(String productId) async {
     try {
       emit(AddToFavoriteLoading());
-      await _apiSevices.postData('favorite_products', {
+      await _apiServices.postData('favorite_products', {
         'is_favorite': true,
         'for_users': userId,
         'for_products': productId,
@@ -102,5 +102,20 @@ class HomeCubit extends Cubit<HomeState> {
 
   bool checkIfFavoureite(productId) {
     return favoriteProducts.containsKey(productId);
+  }
+
+  Future<void> removeFavorite(String productId) async {
+    emit(RemoveFavoriteLoading());
+    try {
+      await _apiServices.deleteData(
+        "favorite_products?for_users=eq.$userId&for_products=eq.$productId",
+      );
+      await getProducts();
+      favoriteProducts.removeWhere((key, value) => key == productId);
+      emit(RemoveFavoriteSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(RemoveFavoriteError());
+    }
   }
 }

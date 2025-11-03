@@ -15,7 +15,7 @@ class ProductsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          HomeCubit()..getproducts(qurey: query, category: category),
+          HomeCubit()..getProducts(qurey: query, category: category),
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -65,7 +65,14 @@ class ProductsList extends StatelessWidget {
                     product: product,
                     isFavorite: homeCubit.checkIfFavoureite(product.productId),
                     onFavoriteTap: () {
-                      homeCubit.addToFavorites(product.productId);
+                      bool isFav = homeCubit.checkIfFavoureite(
+                        product.productId,
+                      );
+                      if (!isFav) {
+                        homeCubit.addToFavorites(product.productId);
+                      } else {
+                        homeCubit.removeFavorite(product.productId);
+                      }
                     },
                   ),
                 )

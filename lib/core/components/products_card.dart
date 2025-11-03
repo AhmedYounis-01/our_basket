@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class ProductCard extends StatelessWidget {
   final ProductModel product;
   final Function()? onFavoriteTap;
+  final Function()? onFavoriteRemove;
   final bool isFavorite;
 
   const ProductCard({
@@ -15,6 +16,7 @@ class ProductCard extends StatelessWidget {
     required this.product,
     this.onFavoriteTap,
     required this.isFavorite,
+    this.onFavoriteRemove,
   });
 
   @override
