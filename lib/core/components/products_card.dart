@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
+  final Function()? onFavoriteTap;
 
-  const ProductCard({super.key, required this.product});
+  const ProductCard({super.key, required this.product, this.onFavoriteTap});
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +70,9 @@ class ProductCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Icon(
-                    Icons.favorite,
+                  IconButton(
+                    onPressed: onFavoriteTap,
+                    icon: Icon(Icons.favorite),
                     color: product.favoriteProducts.isNotEmpty
                         ? Colors.red
                         : Colors.grey,

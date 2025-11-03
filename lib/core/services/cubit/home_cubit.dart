@@ -4,12 +4,14 @@ import 'package:bloc/bloc.dart';
 import 'package:e_commerce_supabase/core/models/product_model.dart';
 import 'package:e_commerce_supabase/core/services/api_sevices.dart';
 import 'package:equatable/equatable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   final ApiSevices _apiSevices = ApiSevices();
+  final String userId = Supabase.instance.client.auth.currentUser!.id;
 
   List<ProductModel> products = [];
   List<ProductModel> searchResults = [];
@@ -52,6 +54,21 @@ class HomeCubit extends Cubit<HomeState> {
           categoryProducts.add(product);
         }
       }
+    }
+  }
+
+  Future<void> addToFavorites(String productId) async {
+    try {
+      emit(AddToFavoriteLoading());
+      await _apiSevices.postData('favorite_products', {
+        'is_favorite': true,
+        'for_users': userId,
+        'for_products': productId,
+      }); 
+      emit(AddToFavoriteSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(AddToFavoriteError());
     }
   }
 }

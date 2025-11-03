@@ -19,11 +19,12 @@ class ProductsList extends StatelessWidget {
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {},
         builder: (context, state) {
+          final homeCubit = context.read<HomeCubit>();
           List<ProductModel> products = query != null && query!.isNotEmpty
-              ? context.read<HomeCubit>().searchResults
+              ? homeCubit.searchResults
               : category != null && category!.isNotEmpty
-              ? context.read<HomeCubit>().categoryProducts
-              : context.read<HomeCubit>().products;
+              ? homeCubit.categoryProducts
+              : homeCubit.products;
 
           if (state is HomeLoading) {
             return const Center(child: CustomCircularIndicator());
@@ -59,7 +60,14 @@ class ProductsList extends StatelessWidget {
           //! >> use ListView.builder But Without (((shrinkWrap))) instead of column to improve performance
           return Column(
             children: products
-                .map((product) => ProductCard(product: product))
+                .map(
+                  (product) => ProductCard(
+                    product: product,
+                    onFavoriteTap: () {
+                      homeCubit.addToFavorites(product.productId);
+                    },
+                  ),
+                )
                 .toList(),
           );
         },
