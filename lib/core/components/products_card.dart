@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:e_commerce_supabase/core/components/custom_net_img.dart';
 import 'package:e_commerce_supabase/core/function/navigate_to.dart';
 import 'package:e_commerce_supabase/core/models/product_model.dart';
 import 'package:e_commerce_supabase/core/utils/colors.dart';
 import 'package:e_commerce_supabase/features/product_details/ui/product_details_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:pay_with_paymob/pay_with_paymob.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
@@ -121,7 +124,22 @@ class ProductCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PaymentView(
+                            onPaymentSuccess: () {
+                              log("payment success");
+                            },
+                            onPaymentError: () {
+                              log("payment failed");
+                            },
+                            price: double.parse(product.price.toString()),
+                          ),
+                        ),
+                      );
+                    },
                     child: const Text(
                       "Buy Now",
                       style: TextStyle(
