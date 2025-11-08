@@ -13,6 +13,7 @@ class ProductCard extends StatelessWidget {
   final Function()? onFavoriteTap;
   final Function()? onFavoriteRemove;
   final bool isFavorite;
+  final void Function() onPaymentSuccess;
 
   const ProductCard({
     super.key,
@@ -20,6 +21,7 @@ class ProductCard extends StatelessWidget {
     this.onFavoriteTap,
     required this.isFavorite,
     this.onFavoriteRemove,
+    required this.onPaymentSuccess,
   });
 
   @override
@@ -129,9 +131,7 @@ class ProductCard extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => PaymentView(
-                            onPaymentSuccess: () {
-                              log("payment success");
-                            },
+                            onPaymentSuccess: onPaymentSuccess,
                             onPaymentError: () {
                               log("payment failed");
                             },

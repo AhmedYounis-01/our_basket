@@ -70,6 +70,9 @@ class ProductsList extends StatelessWidget {
             children: products
                 .map(
                   (ProductModel product) => ProductCard(
+                    onPaymentSuccess: () {
+                      homeCubit.purchaseProduct(product.productId);
+                    },
                     product: product,
                     isFavorite: homeCubit.checkIfFavoureite(product.productId),
                     onFavoriteTap: () {
