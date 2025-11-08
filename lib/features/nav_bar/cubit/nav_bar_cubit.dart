@@ -13,10 +13,10 @@ class NavBarCubit extends Cubit<NavBarState> {
     emit(state.copyWith(currentIndex: index));
   }
 
-  final List<Widget> pages = [
-    HomeScreen(),
-    StoreScreen(),
-    FavoriteScreen(),
-    ProfileScreen(),
+  List<Widget> get pages => [
+    const HomeScreen(),
+    const StoreScreen(),
+    const FavoriteScreen(),
+    const ProfileScreen(),
   ];
 }

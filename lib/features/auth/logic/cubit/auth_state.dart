@@ -57,6 +57,12 @@ final class AddUserError extends AuthState {}
 
 final class GetUserDataLoading extends AuthState {}
 
-final class GetUserDataSuccess extends AuthState {}
+final class GetUserDataSuccess extends AuthState {
+  final UserModel userModel;
+  const GetUserDataSuccess(this.userModel);
+}
 
-final class GetUserDataError extends AuthState {}
+final class GetUserDataError extends AuthState {
+  final String msg;
+  const GetUserDataError(this.msg);
+}

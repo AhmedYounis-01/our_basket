@@ -162,10 +162,10 @@ class AuthCubit extends Cubit<AuthState> {
 
       userModel = UserModel.fromJson(data);
       log(data.toString());
-      emit(GetUserDataSuccess());
+      emit(GetUserDataSuccess(userModel!));
     } catch (e) {
       log(e.toString());
-      emit(GetUserDataError());
+      emit(GetUserDataError(e.toString()));
     }
   }
 
