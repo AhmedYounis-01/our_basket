@@ -11,11 +11,13 @@ class ProductsList extends StatelessWidget {
     this.query,
     this.category,
     this.isFavoriteView = false,
+    this.isUserOrderView = false,
   });
 
   final String? query;
   final String? category;
   final bool isFavoriteView;
+  final bool isUserOrderView;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,8 @@ class ProductsList extends StatelessWidget {
               ? homeCubit.categoryProducts
               : isFavoriteView
               ? homeCubit.favoriteProductList
+              : isUserOrderView
+              ? homeCubit.userOrders
               : homeCubit.products;
 
           if (state is HomeLoading) {

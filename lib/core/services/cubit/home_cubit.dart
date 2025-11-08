@@ -37,6 +37,7 @@ class HomeCubit extends Cubit<HomeState> {
       categoryProducts.clear();
       favoriteProducts.clear();
       favoriteProductList.clear();
+      userOrders.clear();
       for (final item in (response.data as List<dynamic>)) {
         final product = ProductModel.fromJson(item as Map<String, dynamic>);
         products.add(product);
@@ -62,6 +63,7 @@ class HomeCubit extends Cubit<HomeState> {
       getFavoriteProducts();
       search(qurey);
       getProuductsOfCategory(category);
+      getUserOrderProducts();
       safeEmit(HomeSuccess());
     } catch (e) {
       log(e.toString());
@@ -175,6 +177,21 @@ class HomeCubit extends Cubit<HomeState> {
     } catch (e) {
       log(e.toString());
       safeEmit(PurchaseProductError());
+    }
+  }
+
+  List<ProductModel> userOrders = [];
+  void getUserOrderProducts() {
+    userOrders.clear();
+    for (ProductModel product in products) {
+      if (product.purchase.isNotEmpty) {
+        for (PurchaseProducts userOrder in product.purchase) {
+          if (userOrder.forUsers == userId) {
+            userOrders.add(product);
+            break;
+          }
+        }
+      }
     }
   }
 }

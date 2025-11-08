@@ -66,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
                             const SizedBox(height: 10),
                             CustomRowBtn(
                               onTap: () =>
-                                  navigateTo(context, const MyOrdersViwe()),
+                                  navigateTo(context, const MyOrdersView()),
                               icon: Icons.shopping_basket,
                               text: "My Orders",
                             ),

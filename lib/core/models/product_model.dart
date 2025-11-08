@@ -9,7 +9,7 @@ class ProductModel {
   final String category;
   final String imageUrl;
   final List<FavoriteProduct> favoriteProducts;
-  final List<Purchase> purchase;
+  final List<PurchaseProducts> purchase;
 
   ProductModel({
     required this.productId,
@@ -43,7 +43,7 @@ class ProductModel {
           [],
       purchase:
           (json['purchase'] as List<dynamic>?)
-              ?.map((e) => Purchase.fromJson(e))
+              ?.map((e) => PurchaseProducts.fromJson(e))
               .toList() ??
           [],
     );
@@ -102,14 +102,14 @@ class FavoriteProduct {
   }
 }
 
-class Purchase {
+class PurchaseProducts {
   final String id;
   final String forUsers;
   final bool isBought;
   final DateTime createdAt;
   final String forProducts;
 
-  Purchase({
+  PurchaseProducts({
     required this.id,
     required this.forUsers,
     required this.isBought,
@@ -117,8 +117,8 @@ class Purchase {
     required this.forProducts,
   });
 
-  factory Purchase.fromJson(Map<String, dynamic> json) {
-    return Purchase(
+  factory PurchaseProducts.fromJson(Map<String, dynamic> json) {
+    return PurchaseProducts(
       id: json['id'],
       forUsers: json['for_users'],
       isBought: json['is_bought'],
