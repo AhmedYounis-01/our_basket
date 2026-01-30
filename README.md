@@ -1,16 +1,54 @@
-# e_commerce_supabase
+🛒 Our Basket App
 
-A new Flutter project.
+A modern e-commerce mobile application built with Flutter, using Supabase as a complete backend solution.
 
-## Getting Started
+🚀 Overview
 
-This project is a starting point for a Flutter application.
+Our Basket allows users to browse products, explore categories, manage favorites, and view detailed product information through a smooth and user-friendly shopping experience.
 
-A few resources to get you started if this is your first Flutter project:
+The app is designed with clean architecture principles and real-time backend integration to ensure performance, scalability, and maintainability.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+✨ Key Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+🛍 Product browsing with category-based navigation
+
+❤️ Favorites management
+
+🔍 Detailed product pages
+
+👤 User profile management
+
+⚡ Smooth and responsive UI
+
+🧠 Clean architecture for scalable development
+
+🧱 Architecture & Technologies
+
+Framework: Flutter
+
+Architecture: MVVM
+
+State Management: Cubit
+
+Backend: Supabase (Auth, Database, APIs)
+
+<p align="center">
+  <img src="screenshots/home.png" width="45%" />
+  <img src="screenshots/home_product.png" width="45%" />
+</p>
+<p align="center">
+  <img src="screenshots/shop.png" width="45%" />
+  <img src="screenshots/electronics_category.png" width="45%" />
+</p>
+<p align="center">
+  <img src="screenshots/fav_category.png" width="45%" />
+  <img src="screenshots/product_details.png" width="45%" />
+</p>
+<p align="center">
+  <img src="screenshots/profile.png" width="45%" />
+</p>
+
+
+Database: Supabase PostgreSQL
+
+Tools: Git, GitHub, VS Code
